@@ -14,6 +14,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n  mutation setOrganizationRepositories(\n    $organizationId: Int!\n    $repositories: [InputRepository!]!\n  ) {\n    setOrganizationRepositories(\n      organizationId: $organizationId\n      repositories: $repositories\n    )\n  }\n": types.SetOrganizationRepositoriesDocument,
+    "\n  mutation setRepositoryStats(\n    $repositoryId: Int!\n    $organizationId: Int!\n    $totalLines: Int!\n    $totalCommits: Int!\n    $userStats: [UserContributionsInput!]!\n  ) {\n    setRepositoryStats(\n      repositoryId: $repositoryId\n      organizationId: $organizationId\n      totalLines: $totalLines\n      totalCommits: $totalCommits\n      userStats: $userStats\n    )\n  }\n": types.SetRepositoryStatsDocument,
 };
 
 /**
@@ -34,6 +35,10 @@ export function gql(source: string): unknown;
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation setOrganizationRepositories(\n    $organizationId: Int!\n    $repositories: [InputRepository!]!\n  ) {\n    setOrganizationRepositories(\n      organizationId: $organizationId\n      repositories: $repositories\n    )\n  }\n"): (typeof documents)["\n  mutation setOrganizationRepositories(\n    $organizationId: Int!\n    $repositories: [InputRepository!]!\n  ) {\n    setOrganizationRepositories(\n      organizationId: $organizationId\n      repositories: $repositories\n    )\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation setRepositoryStats(\n    $repositoryId: Int!\n    $organizationId: Int!\n    $totalLines: Int!\n    $totalCommits: Int!\n    $userStats: [UserContributionsInput!]!\n  ) {\n    setRepositoryStats(\n      repositoryId: $repositoryId\n      organizationId: $organizationId\n      totalLines: $totalLines\n      totalCommits: $totalCommits\n      userStats: $userStats\n    )\n  }\n"): (typeof documents)["\n  mutation setRepositoryStats(\n    $repositoryId: Int!\n    $organizationId: Int!\n    $totalLines: Int!\n    $totalCommits: Int!\n    $userStats: [UserContributionsInput!]!\n  ) {\n    setRepositoryStats(\n      repositoryId: $repositoryId\n      organizationId: $organizationId\n      totalLines: $totalLines\n      totalCommits: $totalCommits\n      userStats: $userStats\n    )\n  }\n"];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};

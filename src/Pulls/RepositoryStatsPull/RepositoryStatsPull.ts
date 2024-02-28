@@ -4,6 +4,10 @@ import { ChildProcess } from "@figliolia/child-process";
 import { Stack } from "Generics/Stack";
 import { setRepositoryStats } from "GQL";
 import { JobStatus } from "GQL/AsyncService/Types";
+import type {
+  SetRepositoryStatsMutation,
+  SetRepositoryStatsMutationVariables,
+} from "GQL/CoreService/Types";
 import { RepositoryPull } from "Pulls/RepositoryPull";
 import type {
   IUserContributions,
@@ -61,7 +65,7 @@ export class RepositoryStatsPull extends RepositoryPull<Options> {
         const email = current.match(RepositoryStatsPull.EMAIL_REGEX);
         if (email && email.length === 1) {
           this.userStats.push({
-            email: email[0],
+            email: email[0].slice(1, -1),
           } as unknown as IUserContributions);
           this.collectingUser = true;
           continue;
@@ -106,7 +110,10 @@ export class RepositoryStatsPull extends RepositoryPull<Options> {
   public async pushResultsToCore() {
     const { repositoryId, organizationId } = this.options;
     try {
-      await CoreServiceRequest({
+      await CoreServiceRequest<
+        SetRepositoryStatsMutation,
+        SetRepositoryStatsMutationVariables
+      >({
         query: setRepositoryStats,
         variables: {
           repositoryId,

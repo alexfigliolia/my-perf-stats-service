@@ -56,6 +56,7 @@ export type Mutation = {
   loginWithGithub: User;
   logout: Scalars['Boolean']['output'];
   setOrganizationRepositories: Scalars['Boolean']['output'];
+  setRepositoryStats: Scalars['Boolean']['output'];
   trackRepository: Repository;
   verifyAnonymous: Scalars['Boolean']['output'];
   verifySession: Scalars['Boolean']['output'];
@@ -77,6 +78,15 @@ export type MutationLoginWithGithubArgs = {
 export type MutationSetOrganizationRepositoriesArgs = {
   organizationId: Scalars['Int']['input'];
   repositories: Array<InputRepository>;
+};
+
+
+export type MutationSetRepositoryStatsArgs = {
+  organizationId: Scalars['Int']['input'];
+  repositoryId: Scalars['Int']['input'];
+  totalCommits: Scalars['Int']['input'];
+  totalLines: Scalars['Int']['input'];
+  userStats: Array<UserContributionsInput>;
 };
 
 
@@ -187,6 +197,12 @@ export type UserAndAffiliations = {
   organizations: Array<OrgAffiliationType>;
 };
 
+export type UserContributionsInput = {
+  commits: Scalars['Int']['input'];
+  email: Scalars['String']['input'];
+  lines: Scalars['Int']['input'];
+};
+
 export enum UserRole {
   Admin = 'admin',
   Manager = 'manager',
@@ -201,5 +217,17 @@ export type SetOrganizationRepositoriesMutationVariables = Exact<{
 
 export type SetOrganizationRepositoriesMutation = { __typename?: 'Mutation', setOrganizationRepositories: boolean };
 
+export type SetRepositoryStatsMutationVariables = Exact<{
+  repositoryId: Scalars['Int']['input'];
+  organizationId: Scalars['Int']['input'];
+  totalLines: Scalars['Int']['input'];
+  totalCommits: Scalars['Int']['input'];
+  userStats: Array<UserContributionsInput> | UserContributionsInput;
+}>;
+
+
+export type SetRepositoryStatsMutation = { __typename?: 'Mutation', setRepositoryStats: boolean };
+
 
 export const SetOrganizationRepositoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"setOrganizationRepositories"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"organizationId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"repositories"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"InputRepository"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"setOrganizationRepositories"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"organizationId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"organizationId"}}},{"kind":"Argument","name":{"kind":"Name","value":"repositories"},"value":{"kind":"Variable","name":{"kind":"Name","value":"repositories"}}}]}]}}]} as unknown as DocumentNode<SetOrganizationRepositoriesMutation, SetOrganizationRepositoriesMutationVariables>;
+export const SetRepositoryStatsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"setRepositoryStats"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"repositoryId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"organizationId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"totalLines"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"totalCommits"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userStats"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserContributionsInput"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"setRepositoryStats"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"repositoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"repositoryId"}}},{"kind":"Argument","name":{"kind":"Name","value":"organizationId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"organizationId"}}},{"kind":"Argument","name":{"kind":"Name","value":"totalLines"},"value":{"kind":"Variable","name":{"kind":"Name","value":"totalLines"}}},{"kind":"Argument","name":{"kind":"Name","value":"totalCommits"},"value":{"kind":"Variable","name":{"kind":"Name","value":"totalCommits"}}},{"kind":"Argument","name":{"kind":"Name","value":"userStats"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userStats"}}}]}]}}]} as unknown as DocumentNode<SetRepositoryStatsMutation, SetRepositoryStatsMutationVariables>;
