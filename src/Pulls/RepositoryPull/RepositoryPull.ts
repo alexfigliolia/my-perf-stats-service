@@ -21,26 +21,4 @@ export abstract class RepositoryPull<O extends Options> extends Pull<O> {
     }
     await new ChildProcess(`git clone ${this.options.clone_url} tmp`).handler;
   }
-
-  protected traceDigit(str: string) {
-    let digit = "";
-    const { length } = str;
-    for (let i = 0; i < length; i++) {
-      const current = str[i];
-      if (this.isDigit(current)) {
-        digit += current;
-      } else if (digit.length) {
-        break;
-      }
-    }
-    if (!digit) {
-      return 0;
-    }
-    return parseInt(digit);
-  }
-
-  protected isDigit(str: string) {
-    // @ts-ignore
-    return parseInt(str) == str;
-  }
 }

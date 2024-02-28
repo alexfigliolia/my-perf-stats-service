@@ -4,15 +4,17 @@ export const setRepositoryStats = gql`
   mutation setRepositoryStats(
     $repositoryId: Int!
     $organizationId: Int!
-    $totalLines: Int!
-    $totalCommits: Int!
+    $lines: Int!
+    $commits: Int!
+    $date: String
     $userStats: [UserContributionsInput!]!
   ) {
     setRepositoryStats(
+      date: $date
       repositoryId: $repositoryId
       organizationId: $organizationId
-      totalLines: $totalLines
-      totalCommits: $totalCommits
+      lines: $lines
+      commits: $commits
       userStats: $userStats
     )
   }
