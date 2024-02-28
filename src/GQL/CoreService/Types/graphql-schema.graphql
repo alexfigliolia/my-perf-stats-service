@@ -1,0 +1,104 @@
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+type Query {
+  installationSetup(platform: Platform!, installation_id: Int!): Installation!
+  userAndAffiliations: UserAndAffiliations!
+  trackedRepositories(organizationId: Int!): [Repository!]!
+  availableRepositories(offset: Int, limit: Int, sort: RepositorySortKeys, search: String, organizationId: Int!): [Repository!]!
+}
+type Installation {
+  id: Int!
+  installation_id: Int!
+  platform: Platform!
+  organizationId: Int
+  type: InstallationType!
+}
+type UserAndAffiliations {
+  id: Int!
+  name: String!
+  organizations: [OrgAffiliationType!]!
+  github: GithubUserAuthorizationType
+}
+type OrgAffiliationType {
+  id: Int!
+  name: String!
+  roles: [RoleType!]!
+  installations: [Installation!]!
+}
+type RoleType {
+  role: UserRole!
+}
+type GithubUserAuthorizationType {
+  id: Int!
+  token: String!
+}
+type Repository {
+  id: Int!
+  name: String!
+  api_url: String!
+  html_url: String!
+  clone_url: String!
+  created_at: String!
+  updated_at: String!
+  platform: Platform!
+  platform_id: Int!
+  language: String!
+  description: String!
+}
+type Mutation {
+  logout: Boolean!
+  verifySession: Boolean!
+  verifyAnonymous: Boolean!
+  loginWithGithub(code: String!): User!
+  trackRepository(id: Int!): Repository!
+  createGithubAccount(code: String!, installation_id: Int!, name: String!): Boolean!
+  setOrganizationRepositories(repositories: [InputRepository!]!, organizationId: Int!): Boolean!
+}
+type User {
+  id: Int!
+  name: String!
+}
+type Subscription {
+  installationSetupStream(platform: Platform!, installation_id: Int!): Installation!
+  availableRepositoriesStream(offset: Int, limit: Int, sort: RepositorySortKeys, search: String, organizationId: Int!): [Repository!]!
+}
+enum Platform {
+  github
+  bitbucket
+}
+enum InstallationType {
+  organization
+  individual
+}
+enum UserRole {
+  admin
+  manager
+  viewer
+}
+enum RepositorySortKeys {
+  name
+  created_at
+  updated_at
+  language
+}
+input InputRepository {
+  name: String!
+  api_url: String!
+  html_url: String!
+  clone_url: String!
+  created_at: String!
+  updated_at: String!
+  platform: Platform!
+  platform_id: Int!
+  organizationId: Int!
+  language: String
+  description: String
+}
+"Exposes a URL that specifies the behavior of this scalar."
+directive @specifiedBy(
+    "The URL that specifies the behavior of this scalar."
+    url: String!
+  ) on SCALAR

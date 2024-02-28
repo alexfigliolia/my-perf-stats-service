@@ -1,0 +1,56 @@
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+type Query {
+  nextRepositoryPullJob: RepositoryPullJob!
+  nextRepositoryStatsPullJob: RepositoryStatsPullJob!
+}
+type RepositoryPullJob {
+  jobId: Int!
+  id: Int!
+  api_url: String!
+  token: String!
+  currentPage: Int!
+  pageSize: Int!
+  platform: Platform!
+  requestMethod: RequestMethod!
+  organizationId: Int!
+}
+type RepositoryStatsPullJob {
+  jobId: Int!
+  id: Int!
+  clone_url: String!
+  token: String!
+  repositoryId: Int!
+  organizationId: Int!
+}
+type Mutation {
+  setJobStatus(id: Int!, status: JobStatus!): Boolean!
+  registerRepositoryPull(token: String!, api_url: String!, platform: Platform!, requestMethod: RequestMethod!, organizationId: Int!): Int!
+  registerRepositoryStatsPull(token: String!, clone_url: String!, repositoryId: Int!, organizationId: Int!): Int!
+}
+type Subscription {
+  repositoryPulls: RepositoryPullJob!
+  repositoryStatsPulls: RepositoryStatsPullJob!
+}
+enum Platform {
+  github
+  bitbucket
+}
+enum RequestMethod {
+  GET
+  POST
+}
+enum JobStatus {
+  complete
+  failed
+  pending
+  inprogress
+}
+"Exposes a URL that specifies the behavior of this scalar."
+directive @specifiedBy(
+    "The URL that specifies the behavior of this scalar."
+    url: String!
+  ) on SCALAR
