@@ -3,8 +3,8 @@ import { gql } from "graphql-request";
 export const nextRepositoryStatsPullJob = gql`
   query nextRepositoryStatsPullJob {
     nextRepositoryStatsPullJob {
-      jobId
       date
+      jobId
       clone_url
       token
       repositoryId

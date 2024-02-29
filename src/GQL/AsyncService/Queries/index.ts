@@ -1,3 +1,3 @@
-export * from "./statPulls.gql";
-export * from "./nextPull.gql";
-export * from "./setJobStatus.gql";
+export * from "./repositoryStatsPulls.gql";
+export * from "./nextRepositoryStatsJob.gql";
+export * from "./setRepositoryStatsJobStatus.gql";

@@ -1,7 +1,14 @@
 import { Pull } from "@alexfigliolia/my-performance-async";
-import { CoreServiceRequest } from "@alexfigliolia/my-performance-clients";
+import {
+  AsyncServiceRequest,
+  CoreServiceRequest,
+} from "@alexfigliolia/my-performance-clients";
 import { ChildProcess } from "@figliolia/child-process";
-import { setRepositoryStats } from "GQL";
+import { setRepositoryStats, setRepositoryStatsJobStatus } from "GQL";
+import type {
+  SetRepositoryStatsJobStatusMutation,
+  SetRepositoryStatsJobStatusMutationVariables,
+} from "GQL/AsyncService/Types";
 import { JobStatus } from "GQL/AsyncService/Types";
 import type {
   SetRepositoryStatsMutation,
@@ -75,6 +82,24 @@ export class RepositoryStatsPull extends RepositoryPull<Options> {
       });
     } catch (error) {
       this.status = JobStatus.Failed;
+    }
+  }
+
+  public override async setJobStatus(
+    id = this.options.id,
+    status = this.status,
+  ) {
+    try {
+      await AsyncServiceRequest<
+        SetRepositoryStatsJobStatusMutation,
+        SetRepositoryStatsJobStatusMutationVariables
+      >({
+        query: setRepositoryStatsJobStatus,
+        variables: { id, status },
+      });
+    } catch (error) {
+      console.log("error", error);
+      // Silence
     }
   }
 }
