@@ -1,14 +1,18 @@
+import { subDays, subMonths, subWeeks, subYears } from "date-fns";
 import { ChildProcess } from "@figliolia/child-process";
+import { Schedule } from "GQL/AsyncService/Types";
 import { Parser } from "./Parser";
 
 export class QuickStats {
   cwd: string;
   date?: string | null;
+  range?: Schedule | null;
   private static readonly TIME = "T08:00:00.000Z";
   public static readonly BASE_COMMAND = "git-quick-stats -T";
-  constructor(cwd: string, date?: string | null) {
+  constructor(cwd: string, date?: string | null, range?: Schedule | null) {
     this.cwd = cwd;
     this.date = date;
+    this.range = range;
   }
 
   public async execute() {
@@ -19,26 +23,30 @@ export class QuickStats {
   }
 
   private get command() {
-    if (!this.date) {
+    if (!this.date || !this.range) {
       return QuickStats.BASE_COMMAND;
     }
     return [
       `_GIT_UNTIL=${this.guard()}`,
-      `_GIT_SINCE=${this.oneMonthAgo}`,
+      `_GIT_SINCE=${this.startDate}`,
       QuickStats.BASE_COMMAND,
     ].join(" ");
   }
 
-  private get oneMonthAgo() {
-    const current = this.guard();
-    const baseDate = new Date(current);
-    const day = this.zeroth(baseDate.getDate());
-    const month = baseDate.getMonth();
-    const year = baseDate.getFullYear();
-    if (month === 0) {
-      return `${year - 1}-${12}-${day}${QuickStats.TIME}`;
+  private get startDate() {
+    switch (this.range) {
+      case Schedule.Once:
+      case Schedule.Daily:
+        return subDays(new Date(), 1).toISOString();
+      case Schedule.Weekly:
+        return subWeeks(new Date(), 1).toISOString();
+      case Schedule.Monthly:
+        return subMonths(new Date(), 1).toISOString();
+      case Schedule.Yearly:
+        return subYears(new Date(), 1).toISOString();
+      default:
+        throw new Error("Invalid range for stats pull");
     }
-    return `${year}-${this.zeroth(month)}-${day}${QuickStats.TIME}`;
   }
 
   private guard() {
@@ -54,12 +62,5 @@ export class QuickStats {
       throw new Error("Dates must be provided in ISO format");
     }
     return `${date}${QuickStats.TIME}`;
-  }
-
-  private zeroth(n: number) {
-    if (n < 10) {
-      return `0${n}`;
-    }
-    return n.toString();
   }
 }

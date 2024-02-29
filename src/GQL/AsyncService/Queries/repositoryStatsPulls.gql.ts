@@ -5,6 +5,7 @@ export const repositoryStatsPulls = gql`
     repositoryStatsPulls {
       date
       jobId
+      range
       clone_url
       token
       repositoryId

@@ -92,6 +92,7 @@ export type RepositoryStatsPullJob = {
   id: Scalars['Int']['output'];
   jobId: Scalars['Int']['output'];
   organizationId: Scalars['Int']['output'];
+  range?: Maybe<Schedule>;
   repositoryId: Scalars['Int']['output'];
   token: Scalars['String']['output'];
 };
@@ -99,6 +100,14 @@ export type RepositoryStatsPullJob = {
 export enum RequestMethod {
   Get = 'GET',
   Post = 'POST'
+}
+
+export enum Schedule {
+  Daily = 'daily',
+  Monthly = 'monthly',
+  Once = 'once',
+  Weekly = 'weekly',
+  Yearly = 'yearly'
 }
 
 export type Subscription = {
@@ -110,12 +119,12 @@ export type Subscription = {
 export type NextRepositoryStatsPullJobQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type NextRepositoryStatsPullJobQuery = { __typename?: 'Query', nextRepositoryStatsPullJob: { __typename?: 'RepositoryStatsPullJob', date?: string | null, jobId: number, clone_url: string, token: string, repositoryId: number, organizationId: number } };
+export type NextRepositoryStatsPullJobQuery = { __typename?: 'Query', nextRepositoryStatsPullJob: { __typename?: 'RepositoryStatsPullJob', date?: string | null, jobId: number, range?: Schedule | null, clone_url: string, token: string, repositoryId: number, organizationId: number } };
 
 export type RepositoryStatsPullsSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type RepositoryStatsPullsSubscription = { __typename?: 'Subscription', repositoryStatsPulls: { __typename?: 'RepositoryStatsPullJob', date?: string | null, jobId: number, clone_url: string, token: string, repositoryId: number, organizationId: number } };
+export type RepositoryStatsPullsSubscription = { __typename?: 'Subscription', repositoryStatsPulls: { __typename?: 'RepositoryStatsPullJob', date?: string | null, jobId: number, range?: Schedule | null, clone_url: string, token: string, repositoryId: number, organizationId: number } };
 
 export type SetRepositoryStatsJobStatusMutationVariables = Exact<{
   id: Scalars['Int']['input'];
@@ -126,6 +135,6 @@ export type SetRepositoryStatsJobStatusMutationVariables = Exact<{
 export type SetRepositoryStatsJobStatusMutation = { __typename?: 'Mutation', setRepositoryStatsJobStatus: boolean };
 
 
-export const NextRepositoryStatsPullJobDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"nextRepositoryStatsPullJob"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nextRepositoryStatsPullJob"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"jobId"}},{"kind":"Field","name":{"kind":"Name","value":"clone_url"}},{"kind":"Field","name":{"kind":"Name","value":"token"}},{"kind":"Field","name":{"kind":"Name","value":"repositoryId"}},{"kind":"Field","name":{"kind":"Name","value":"organizationId"}}]}}]}}]} as unknown as DocumentNode<NextRepositoryStatsPullJobQuery, NextRepositoryStatsPullJobQueryVariables>;
-export const RepositoryStatsPullsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"subscription","name":{"kind":"Name","value":"repositoryStatsPulls"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repositoryStatsPulls"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"jobId"}},{"kind":"Field","name":{"kind":"Name","value":"clone_url"}},{"kind":"Field","name":{"kind":"Name","value":"token"}},{"kind":"Field","name":{"kind":"Name","value":"repositoryId"}},{"kind":"Field","name":{"kind":"Name","value":"organizationId"}}]}}]}}]} as unknown as DocumentNode<RepositoryStatsPullsSubscription, RepositoryStatsPullsSubscriptionVariables>;
+export const NextRepositoryStatsPullJobDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"nextRepositoryStatsPullJob"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nextRepositoryStatsPullJob"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"jobId"}},{"kind":"Field","name":{"kind":"Name","value":"range"}},{"kind":"Field","name":{"kind":"Name","value":"clone_url"}},{"kind":"Field","name":{"kind":"Name","value":"token"}},{"kind":"Field","name":{"kind":"Name","value":"repositoryId"}},{"kind":"Field","name":{"kind":"Name","value":"organizationId"}}]}}]}}]} as unknown as DocumentNode<NextRepositoryStatsPullJobQuery, NextRepositoryStatsPullJobQueryVariables>;
+export const RepositoryStatsPullsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"subscription","name":{"kind":"Name","value":"repositoryStatsPulls"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repositoryStatsPulls"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"jobId"}},{"kind":"Field","name":{"kind":"Name","value":"range"}},{"kind":"Field","name":{"kind":"Name","value":"clone_url"}},{"kind":"Field","name":{"kind":"Name","value":"token"}},{"kind":"Field","name":{"kind":"Name","value":"repositoryId"}},{"kind":"Field","name":{"kind":"Name","value":"organizationId"}}]}}]}}]} as unknown as DocumentNode<RepositoryStatsPullsSubscription, RepositoryStatsPullsSubscriptionVariables>;
 export const SetRepositoryStatsJobStatusDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"setRepositoryStatsJobStatus"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"status"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"JobStatus"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"setRepositoryStatsJobStatus"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"Argument","name":{"kind":"Name","value":"status"},"value":{"kind":"Variable","name":{"kind":"Name","value":"status"}}}]}]}}]} as unknown as DocumentNode<SetRepositoryStatsJobStatusMutation, SetRepositoryStatsJobStatusMutationVariables>;

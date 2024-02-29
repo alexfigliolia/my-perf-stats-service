@@ -45,6 +45,7 @@ export class RepositoryStatsPull extends RepositoryPull<Options> {
     const command = new QuickStats(
       RepositoryPull.TARGET_DIRECTORY,
       this.options.date,
+      this.options.range,
     );
     const { userStats, totalCommits } = await command.execute();
     this.userStats = userStats;
