@@ -25,10 +25,17 @@ export enum JobStatus {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  deleteRepositoryStatsJobs: Scalars['Boolean']['output'];
   registerRepositoryPull: Scalars['Int']['output'];
   registerRepositoryStatsPull: Scalars['Int']['output'];
   setJobStatus: Scalars['Boolean']['output'];
   setRepositoryStatsJobStatus: Scalars['Boolean']['output'];
+  subscribeToRepositoryStats: Scalars['Int']['output'];
+};
+
+
+export type MutationDeleteRepositoryStatsJobsArgs = {
+  repositoryId: Scalars['Int']['input'];
 };
 
 
@@ -59,6 +66,15 @@ export type MutationSetJobStatusArgs = {
 export type MutationSetRepositoryStatsJobStatusArgs = {
   id: Scalars['Int']['input'];
   status: JobStatus;
+};
+
+
+export type MutationSubscribeToRepositoryStatsArgs = {
+  clone_url: Scalars['String']['input'];
+  date?: InputMaybe<Scalars['String']['input']>;
+  organizationId: Scalars['Int']['input'];
+  repositoryId: Scalars['Int']['input'];
+  token: Scalars['String']['input'];
 };
 
 export enum Platform {

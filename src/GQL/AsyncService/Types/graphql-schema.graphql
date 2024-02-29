@@ -33,6 +33,8 @@ type Mutation {
   registerRepositoryPull(token: String!, api_url: String!, platform: Platform!, requestMethod: RequestMethod!, organizationId: Int!): Int!
   registerRepositoryStatsPull(date: String, token: String!, clone_url: String!, repositoryId: Int!, organizationId: Int!): Int!
   setRepositoryStatsJobStatus(id: Int!, status: JobStatus!): Boolean!
+  subscribeToRepositoryStats(date: String, token: String!, clone_url: String!, repositoryId: Int!, organizationId: Int!): Int!
+  deleteRepositoryStatsJobs(repositoryId: Int!): Boolean!
 }
 type Subscription {
   repositoryPulls: RepositoryPullJob!
