@@ -6,11 +6,11 @@ export const setRepositoryStats = gql`
     $organizationId: Int!
     $lines: Int!
     $commits: Int!
-    $date: String
+    $range: Schedule
     $userStats: [UserContributionsInput!]!
   ) {
     setRepositoryStats(
-      date: $date
+      range: $range
       repositoryId: $repositoryId
       organizationId: $organizationId
       lines: $lines

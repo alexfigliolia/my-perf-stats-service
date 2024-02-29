@@ -76,7 +76,7 @@ export class RepositoryStatsPull extends RepositoryPull<Options> {
           repositoryId,
           organizationId,
           lines: this.totalLines,
-          date: this.options.date,
+          range: this.options.range,
           userStats: this.userStats,
           commits: this.totalCommits,
         },

@@ -55,7 +55,7 @@ type Mutation {
   loginWithGithub(code: String!): User!
   trackRepository(id: Int!): Repository!
   createGithubAccount(code: String!, installation_id: Int!, name: String!): Boolean!
-  setRepositoryStats(lines: Int!, date: String, commits: Int!, userStats: [UserContributionsInput!]!, repositoryId: Int!, organizationId: Int!): Boolean!
+  setRepositoryStats(lines: Int!, range: Schedule, commits: Int!, userStats: [UserContributionsInput!]!, repositoryId: Int!, organizationId: Int!): Boolean!
   setOrganizationRepositories(repositories: [InputRepository!]!, organizationId: Int!): Boolean!
 }
 type User {
@@ -84,6 +84,13 @@ enum RepositorySortKeys {
   created_at
   updated_at
   language
+}
+enum Schedule {
+  once
+  daily
+  weekly
+  monthly
+  yearly
 }
 input UserContributionsInput {
   email: String!
