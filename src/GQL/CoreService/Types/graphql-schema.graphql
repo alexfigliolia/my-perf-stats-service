@@ -4,10 +4,61 @@ schema {
   subscription: Subscription
 }
 type Query {
+  teams(limit: Int, search: String, offset: Int, organizationId: Int!, omitCurrentUser: Boolean): [Team!]!
+  myTeams(organizationId: Int!): [CurrentUsersTeam!]!
+  standouts(organizationId: Int!): [Standout!]!
+  totalTeams(organizationId: Int!): Int!
   installationSetup(platform: Platform!, installation_id: Int!): Installation!
   userAndAffiliations: UserAndAffiliations!
   trackedRepositories(organizationId: Int!): [Repository!]!
   availableRepositories(offset: Int, limit: Int, sort: RepositorySortKeys, search: String, organizationId: Int!): [Repository!]!
+  overallStatsPerUser(organizationId: Int!): TeamStats!
+  totalRepositories(organizationId: Int!): Int!
+}
+type Team {
+  id: Int!
+  name: String!
+  users: [User!]!
+  organizationId: Int!
+  projects: [TrackedRepositoryType!]!
+}
+type User {
+  id: Int!
+  name: String!
+}
+type TrackedRepositoryType {
+  id: Int!
+  repository: Repository!
+}
+type Repository {
+  id: Int!
+  name: String!
+  api_url: String!
+  html_url: String!
+  clone_url: String!
+  created_at: String!
+  updated_at: String!
+  platform: Platform!
+  platform_id: Int!
+  language: String!
+  description: String!
+}
+type CurrentUsersTeam {
+  id: Int!
+  name: String!
+  users: [User!]!
+  organizationId: Int!
+  projects: [TrackedRepositoryType!]!
+  role: RoleType!
+}
+type RoleType {
+  role: UserRole!
+}
+type Standout {
+  id: Int!
+  name: String!
+  lines: Int!
+  increase: Int!
 }
 type Installation {
   id: Int!
@@ -28,28 +79,25 @@ type OrgAffiliationType {
   roles: [RoleType!]!
   installations: [Installation!]!
 }
-type RoleType {
-  role: UserRole!
-}
 type GithubUserAuthorizationType {
   id: Int!
   token: String!
 }
-type Repository {
+type TeamStats {
+  totalLines: Int!
+  totalCommits: Int!
+  users: [OverallStatsPerUser!]!
+}
+type OverallStatsPerUser {
   id: Int!
   name: String!
-  api_url: String!
-  html_url: String!
-  clone_url: String!
-  created_at: String!
-  updated_at: String!
-  platform: Platform!
-  platform_id: Int!
-  language: String!
-  description: String!
+  lines: Int!
+  commits: Int!
+  linesPerMonth: [Int!]!
 }
 type Mutation {
   logout: Boolean!
+  createTeam(name: String!, organizationId: Int!): CurrentUsersTeam!
   verifySession: Boolean!
   verifyAnonymous: Boolean!
   loginWithGithub(code: String!): User!
@@ -57,10 +105,6 @@ type Mutation {
   createGithubAccount(code: String!, installation_id: Int!, name: String!): Boolean!
   setRepositoryStats(lines: Int!, range: Schedule, commits: Int!, userStats: [UserContributionsInput!]!, repositoryId: Int!, organizationId: Int!): Boolean!
   setOrganizationRepositories(repositories: [InputRepository!]!, organizationId: Int!): Boolean!
-}
-type User {
-  id: Int!
-  name: String!
 }
 type Subscription {
   installationSetupStream(platform: Platform!, installation_id: Int!): Installation!
@@ -70,14 +114,14 @@ enum Platform {
   github
   bitbucket
 }
-enum InstallationType {
-  organization
-  individual
-}
 enum UserRole {
   admin
   manager
   viewer
+}
+enum InstallationType {
+  organization
+  individual
 }
 enum RepositorySortKeys {
   name
