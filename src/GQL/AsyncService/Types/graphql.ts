@@ -30,7 +30,7 @@ export type Mutation = {
   registerRepositoryStatsPull: Scalars['Int']['output'];
   setJobStatus: Scalars['Boolean']['output'];
   setRepositoryStatsJobStatus: Scalars['Boolean']['output'];
-  subscribeToRepositoryStats: Scalars['Int']['output'];
+  subscribeToRepositoryStats: Scalars['Boolean']['output'];
 };
 
 
@@ -84,8 +84,14 @@ export enum Platform {
 
 export type Query = {
   __typename?: 'Query';
+  checkRepositoryPullStatus: JobStatus;
   nextRepositoryPullJob: RepositoryPullJob;
   nextRepositoryStatsPullJob: RepositoryStatsPullJob;
+};
+
+
+export type QueryCheckRepositoryPullStatusArgs = {
+  organizationId: Scalars['Int']['input'];
 };
 
 export type RepositoryPullJob = {

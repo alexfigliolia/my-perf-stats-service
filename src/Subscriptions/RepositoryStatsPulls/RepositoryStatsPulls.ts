@@ -1,14 +1,9 @@
 import { BaseSubscription } from "@alexfigliolia/my-performance-async";
-import {
-  AsyncServiceRequest,
-  AsyncServiceSubscription,
-} from "@alexfigliolia/my-performance-clients";
-import { nextRepositoryStatsPullJob, repositoryStatsPulls } from "GQL";
+import { AsyncServiceRequest } from "@alexfigliolia/my-performance-clients";
+import { nextRepositoryStatsPullJob } from "GQL";
 import type {
   NextRepositoryStatsPullJobQuery,
   NextRepositoryStatsPullJobQueryVariables,
-  RepositoryStatsPullsSubscription,
-  RepositoryStatsPullsSubscriptionVariables,
 } from "GQL/AsyncService/Types";
 import { RepositoryStatsPull } from "Pulls";
 import type { Config, IncomingJob } from "./types";
@@ -17,24 +12,8 @@ export class RepositoryStatsPulls extends BaseSubscription<
   Config,
   RepositoryStatsPull
 > {
-  public stream = new AsyncServiceSubscription<
-    RepositoryStatsPullsSubscription,
-    RepositoryStatsPullsSubscriptionVariables
-  >(repositoryStatsPulls, {});
-
   public initialize() {
     void this.poll();
-    this.stream.open();
-    this.stream.onData(response => {
-      if (!response.data?.repositoryStatsPulls) {
-        return;
-      }
-      const { repositoryStatsPulls: next } = response.data;
-      if (next) {
-        const config = this.parseResponse(next);
-        this.onStream(config);
-      }
-    });
     return this;
   }
 
@@ -52,7 +31,7 @@ export class RepositoryStatsPulls extends BaseSubscription<
       );
       this.onPoll(config);
     } catch (error) {
-      this.onPoll(null);
+      this.activatePollInterval();
     }
   }
 

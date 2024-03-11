@@ -6,13 +6,13 @@ schema {
 type Query {
   teams(limit: Int, search: String, offset: Int, organizationId: Int!, omitCurrentUser: Boolean): [Team!]!
   myTeams(organizationId: Int!): [CurrentUsersTeam!]!
-  standouts(organizationId: Int!): [Standout!]!
+  standouts(organizationId: Int!, teamId: Int!): [Standout!]!
   totalTeams(organizationId: Int!): Int!
   installationSetup(platform: Platform!, installation_id: Int!): Installation!
   userAndAffiliations: UserAndAffiliations!
-  trackedRepositories(organizationId: Int!): [Repository!]!
+  trackedRepositories(teamId: Int, organizationId: Int!): [Repository!]!
   availableRepositories(offset: Int, limit: Int, sort: RepositorySortKeys, search: String, organizationId: Int!): [Repository!]!
-  overallStatsPerUser(organizationId: Int!): TeamStats!
+  overallStatsPerUser(organizationId: Int!, teamId: Int!): TeamStats!
   totalRepositories(organizationId: Int!): Int!
 }
 type Team {
@@ -84,6 +84,8 @@ type GithubUserAuthorizationType {
   token: String!
 }
 type TeamStats {
+  id: Int!
+  name: String!
   totalLines: Int!
   totalCommits: Int!
   users: [OverallStatsPerUser!]!
@@ -101,9 +103,10 @@ type Mutation {
   verifySession: Boolean!
   verifyAnonymous: Boolean!
   loginWithGithub(code: String!): User!
-  trackRepository(id: Int!): Repository!
+  trackRepository(teamId: Int!, repositoryId: Int!, organizationId: Int!): Repository!
   createGithubAccount(code: String!, installation_id: Int!, name: String!): Boolean!
   setRepositoryStats(lines: Int!, range: Schedule, commits: Int!, userStats: [UserContributionsInput!]!, repositoryId: Int!, organizationId: Int!): Boolean!
+  addNewUserToTeam(name: String!, email: String!, role: UserRole!, teamId: Int!, organizationId: Int!): TeamStats!
   setOrganizationRepositories(repositories: [InputRepository!]!, organizationId: Int!): Boolean!
 }
 type Subscription {

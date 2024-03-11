@@ -62,6 +62,7 @@ export enum InstallationType {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addNewUserToTeam: TeamStats;
   createGithubAccount: Scalars['Boolean']['output'];
   createTeam: CurrentUsersTeam;
   loginWithGithub: User;
@@ -71,6 +72,15 @@ export type Mutation = {
   trackRepository: Repository;
   verifyAnonymous: Scalars['Boolean']['output'];
   verifySession: Scalars['Boolean']['output'];
+};
+
+
+export type MutationAddNewUserToTeamArgs = {
+  email: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  organizationId: Scalars['Int']['input'];
+  role: UserRole;
+  teamId: Scalars['Int']['input'];
 };
 
 
@@ -109,7 +119,9 @@ export type MutationSetRepositoryStatsArgs = {
 
 
 export type MutationTrackRepositoryArgs = {
-  id: Scalars['Int']['input'];
+  organizationId: Scalars['Int']['input'];
+  repositoryId: Scalars['Int']['input'];
+  teamId: Scalars['Int']['input'];
 };
 
 export type OrgAffiliationType = {
@@ -171,11 +183,13 @@ export type QueryMyTeamsArgs = {
 
 export type QueryOverallStatsPerUserArgs = {
   organizationId: Scalars['Int']['input'];
+  teamId: Scalars['Int']['input'];
 };
 
 
 export type QueryStandoutsArgs = {
   organizationId: Scalars['Int']['input'];
+  teamId: Scalars['Int']['input'];
 };
 
 
@@ -200,6 +214,7 @@ export type QueryTotalTeamsArgs = {
 
 export type QueryTrackedRepositoriesArgs = {
   organizationId: Scalars['Int']['input'];
+  teamId?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type Repository = {
@@ -277,6 +292,8 @@ export type Team = {
 
 export type TeamStats = {
   __typename?: 'TeamStats';
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
   totalCommits: Scalars['Int']['output'];
   totalLines: Scalars['Int']['output'];
   users: Array<OverallStatsPerUser>;
