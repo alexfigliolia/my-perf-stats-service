@@ -48,7 +48,7 @@ export class RepositoryStatsPull extends RepositoryPull<Options> {
       this.options.range,
     );
     const { userStats, totalCommits } = await command.execute();
-    this.userStats = userStats;
+    this.userStats = userStats.toList();
     this.totalCommits = totalCommits;
     await this.countLines();
   }

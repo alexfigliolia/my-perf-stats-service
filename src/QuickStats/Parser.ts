@@ -1,13 +1,13 @@
-import { Stack } from "Generics/Stack";
+import { QuickStack } from "Generics/QuickStack";
 import { StdOutParser } from "Stdout";
 import type { IUserContributions, UserStatKey, UserStats } from "./types";
 
 export class Parser {
   public totalCommits = 0;
-  private collectingUser = false;
   private collectingTotal = false;
   private static EMAIL_REGEX = /<(.*?)>/g;
-  readonly userStats = new Stack<IUserContributions>();
+  private activeUser: string | false = false;
+  readonly userStats = new QuickStack<string, IUserContributions>();
   public static readonly userKeys = new Map<UserStatKey, UserStats>();
   constructor(stdout: string[]) {
     this.parse(stdout);
@@ -36,30 +36,33 @@ export class Parser {
   }
 
   private lookForEmailEntry(line: string) {
-    if (this.collectingTotal || this.collectingUser) {
+    if (this.collectingTotal || this.activeUser) {
       return false;
     }
-    const email = line.match(Parser.EMAIL_REGEX);
-    if (email && email.length === 1) {
-      this.userStats.push({
-        email: email[0].slice(1, -1),
-      } as unknown as IUserContributions);
-      this.collectingUser = true;
+    const match = line.match(Parser.EMAIL_REGEX);
+    if (match && match.length === 1) {
+      const email = match[0].slice(1, -1);
+      if (!this.userStats.has(email)) {
+        this.userStats.set(email, this.createBaseEntry(email));
+      }
+      this.activeUser = email;
       return true;
     }
     return false;
   }
 
   private lookForUserStatistic(line: string) {
-    if (!this.collectingUser) {
+    if (!this.activeUser) {
       return false;
     }
     for (const [indicator, key] of Parser.userKeys) {
       if (line.startsWith(indicator)) {
-        const stats = this.userStats.peek();
-        stats[key] = StdOutParser.traceDigit(line);
-        if ("commits" in stats && "lines" in stats) {
-          this.collectingUser = false;
+        const entry =
+          this.userStats.get(this.activeUser) ||
+          this.createBaseEntry(this.activeUser);
+        entry[key] += StdOutParser.traceDigit(line);
+        if ("commits" in entry && "lines" in entry) {
+          this.activeUser = false;
         }
         return true;
       }
@@ -82,5 +85,9 @@ export class Parser {
     this.totalCommits = StdOutParser.traceDigit(line);
     this.collectingTotal = false;
     return;
+  }
+
+  private createBaseEntry(email: string) {
+    return { email, lines: 0, commits: 0 };
   }
 }
