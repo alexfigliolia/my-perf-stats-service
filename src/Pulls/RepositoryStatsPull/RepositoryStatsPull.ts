@@ -14,6 +14,8 @@ import type {
   SetRepositoryStatsMutation,
   SetRepositoryStatsMutationVariables,
 } from "GQL/CoreService/Types";
+import { Mesh } from "Mesh";
+import type { IMesh } from "Mesh/types";
 import { RepositoryPull } from "Pulls/RepositoryPull";
 import type { IUserContributions } from "QuickStats";
 import { QuickStats } from "QuickStats";
@@ -21,6 +23,7 @@ import { StdOutParser } from "Stdout";
 import type { Options } from "./types";
 
 export class RepositoryStatsPull extends RepositoryPull<Options> {
+  mesh: IMesh = {};
   totalLines: number = 0;
   totalCommits: number = 0;
   userStats: IUserContributions[] = [];
@@ -31,6 +34,8 @@ export class RepositoryStatsPull extends RepositoryPull<Options> {
     try {
       await this.clone();
       await this.getStats();
+      await this.countLines();
+      await this.createMesh();
       this.status = JobStatus.Complete;
     } catch (error) {
       this.status = JobStatus.Failed;
@@ -50,7 +55,6 @@ export class RepositoryStatsPull extends RepositoryPull<Options> {
     const { userStats, totalCommits } = await command.execute();
     this.userStats = userStats.toList();
     this.totalCommits = totalCommits;
-    await this.countLines();
   }
 
   private async countLines() {
@@ -64,6 +68,14 @@ export class RepositoryStatsPull extends RepositoryPull<Options> {
     }
   }
 
+  private async createMesh() {
+    if (!this.options.range) {
+      return;
+    }
+    const mesh = new Mesh(RepositoryPull.TARGET_DIRECTORY);
+    this.mesh = await mesh.execute();
+  }
+
   public async pushResultsToCore() {
     const { repositoryId, organizationId } = this.options;
     try {
@@ -75,6 +87,7 @@ export class RepositoryStatsPull extends RepositoryPull<Options> {
         variables: {
           repositoryId,
           organizationId,
+          mesh: this.mesh,
           lines: this.totalLines,
           range: this.options.range,
           userStats: this.userStats,

@@ -23,6 +23,11 @@ const config: CodegenConfig = {
         gqlTagName: "gql",
         fragmentMasking: false,
       },
+      config: {
+        scalars: {
+          Mesh: "{ [key: string]: { [key: string]: number } }",
+        },
+      },
     },
   },
   ignoreNoDocuments: true,

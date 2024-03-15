@@ -3,9 +3,9 @@ import { StdOutParser } from "Stdout";
 import type { IUserContributions, UserStatKey, UserStats } from "./types";
 
 export class Parser {
+  private sweeps = 0;
   public totalCommits = 0;
   private collectingTotal = false;
-  private static EMAIL_REGEX = /<(.*?)>/g;
   private activeUser: string | false = false;
   readonly userStats = new QuickStack<string, IUserContributions>();
   public static readonly userKeys = new Map<UserStatKey, UserStats>();
@@ -39,7 +39,7 @@ export class Parser {
     if (this.collectingTotal || this.activeUser) {
       return false;
     }
-    const match = line.match(Parser.EMAIL_REGEX);
+    const match = line.match(StdOutParser.EMAIL_REGEX);
     if (match && match.length === 1) {
       const email = match[0].slice(1, -1);
       if (!this.userStats.has(email)) {
@@ -61,7 +61,9 @@ export class Parser {
           this.userStats.get(this.activeUser) ||
           this.createBaseEntry(this.activeUser);
         entry[key] += StdOutParser.traceDigit(line);
-        if ("commits" in entry && "lines" in entry) {
+        this.sweeps++;
+        if (this.sweeps === 2) {
+          this.sweeps = 0;
           this.activeUser = false;
         }
         return true;

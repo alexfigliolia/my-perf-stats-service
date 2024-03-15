@@ -1,4 +1,6 @@
 export class StdOutParser {
+  public static EMAIL_REGEX = /<(.*?)>/g;
+
   public static traceDigit(str: string) {
     let digit = "";
     const { length } = str;
