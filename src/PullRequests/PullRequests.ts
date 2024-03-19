@@ -26,9 +26,9 @@ export class PullRequests {
       const current = line.trim();
       if (
         this.detectEntry(current) ||
-        this.detectAuthor(line) ||
-        this.detectDate(line) ||
-        this.detectDescription(line)
+        this.detectAuthor(current) ||
+        this.detectDate(current) ||
+        this.detectDescription(current)
       ) {
         continue;
       }
@@ -72,6 +72,9 @@ export class PullRequests {
       (!line && !this.currentDescription)
     ) {
       return false;
+    }
+    if (this.currentDescription === false) {
+      this.currentDescription = "";
     }
     if (!line) {
       this.currentDescription += "\n";

@@ -80,7 +80,7 @@ export class RepositoryStatsPull extends RepositoryPull<Options> {
   }
 
   private async getPullRequests() {
-    if (!this.options.range) {
+    if (this.options.range) {
       return;
     }
     const PRs = new PullRequests(RepositoryPull.TARGET_DIRECTORY);
@@ -124,7 +124,6 @@ export class RepositoryStatsPull extends RepositoryPull<Options> {
         variables: { id, status },
       });
     } catch (error) {
-      console.log("error", error);
       // Silence
     }
   }
