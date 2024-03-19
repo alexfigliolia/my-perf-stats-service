@@ -17,10 +17,10 @@
     graphql-request "^6.1.0"
     graphql-sse "^2.5.2"
 
-"@alexfigliolia/my-performance-async@^1.0.5":
-  version "1.0.5"
-  resolved "https://npm.pkg.github.com/download/@alexfigliolia/my-performance-async/1.0.5/6ac1a6c8376dd86059480644b6c7eb687a04e5a0#6ac1a6c8376dd86059480644b6c7eb687a04e5a0"
-  integrity sha512-0PYL5qFJYMwTlK5QNcio1QUJW/Rzu0A55eGeAeY2XyYq6QeoJ8w73i5D028IbqZGZx53VAO0ajIzV8i5lWk+iA==
+"@alexfigliolia/my-performance-async@^1.0.6":
+  version "1.0.6"
+  resolved "https://npm.pkg.github.com/download/@alexfigliolia/my-performance-async/1.0.6/11d6e8383c08ca34372464ed9c5fdef9c6322d75#11d6e8383c08ca34372464ed9c5fdef9c6322d75"
+  integrity sha512-wYxO4Nu42R4iZJlNoHz4EB1hyd7/kPQVdbf1UtoMnwxUOQpUbfDvn4CWwhdlDLqjAJ1itUA3FdekSFCSfBxk+A==
   dependencies:
     "@alexfigliolia/my-performance-clients" "^1.0.0"
 

@@ -1,4 +1,4 @@
-import { Pull } from "@alexfigliolia/my-performance-async";
+import { Pull, RepositoryPull } from "@alexfigliolia/my-performance-async";
 import {
   AsyncServiceRequest,
   CoreServiceRequest,
@@ -16,7 +16,6 @@ import type {
 } from "GQL/CoreService/Types";
 import { Mesh } from "Mesh";
 import type { IMesh } from "Mesh/types";
-import { RepositoryPull } from "Pulls/RepositoryPull";
 import type { IUserContributions } from "QuickStats";
 import { QuickStats } from "QuickStats";
 import { StdOutParser } from "Stdout";
