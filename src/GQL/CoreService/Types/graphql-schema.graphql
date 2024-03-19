@@ -129,7 +129,7 @@ type Mutation {
   loginWithGithub(code: String!): User!
   trackRepository(teamId: Int!, repositoryId: Int!, organizationId: Int!): Repository!
   createGithubAccount(code: String!, installation_id: Int!, name: String!): Boolean!
-  setRepositoryStats(lines: Int!, range: Schedule, commits: Int!, userStats: [UserContributionsInput!]!, repositoryId: Int!, organizationId: Int!, mesh: Mesh!): Boolean!
+  setRepositoryStats(lines: Int!, range: Schedule, commits: Int!, userStats: [UserContributionsInput!]!, repositoryId: Int!, organizationId: Int!, mesh: Mesh!, pullRequests: [PullRequestEntry!]!): Boolean!
   addNewUserToTeam(name: String!, email: String!, role: UserRole!, teamId: Int!, organizationId: Int!): TeamStats!
   setOrganizationRepositories(repositories: [InputRepository!]!, organizationId: Int!): Boolean!
 }
@@ -167,6 +167,11 @@ input UserContributionsInput {
   email: String!
   lines: Int!
   commits: Int!
+}
+input PullRequestEntry {
+  author: String!
+  date: String!
+  description: String!
 }
 input InputRepository {
   name: String!

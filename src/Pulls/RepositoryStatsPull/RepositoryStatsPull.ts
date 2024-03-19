@@ -72,7 +72,7 @@ export class RepositoryStatsPull extends RepositoryPull<Options> {
   }
 
   private async createMesh() {
-    if (!this.options.range) {
+    if (this.options.range) {
       return;
     }
     const mesh = new Mesh(RepositoryPull.TARGET_DIRECTORY);
@@ -80,7 +80,7 @@ export class RepositoryStatsPull extends RepositoryPull<Options> {
   }
 
   private async getPullRequests() {
-    if (this.options.range) {
+    if (!this.options.range) {
       return;
     }
     const PRs = new PullRequests(RepositoryPull.TARGET_DIRECTORY);
@@ -100,6 +100,7 @@ export class RepositoryStatsPull extends RepositoryPull<Options> {
           organizationId,
           mesh: this.mesh,
           lines: this.totalLines,
+          pullRequests: this.PRs,
           range: this.options.range,
           userStats: this.userStats,
           commits: this.totalCommits,

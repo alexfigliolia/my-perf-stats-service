@@ -8,6 +8,7 @@ export const setRepositoryStats = gql`
     $commits: Int!
     $range: Schedule
     $mesh: Mesh!
+    $pullRequests: [PullRequestEntry!]!
     $userStats: [UserContributionsInput!]!
   ) {
     setRepositoryStats(
@@ -17,6 +18,7 @@ export const setRepositoryStats = gql`
       lines: $lines
       commits: $commits
       userStats: $userStats
+      pullRequests: $pullRequests
       mesh: $mesh
     )
   }
