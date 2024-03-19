@@ -16,6 +16,8 @@ import type {
 } from "GQL/CoreService/Types";
 import { Mesh } from "Mesh";
 import type { IMesh } from "Mesh/types";
+import { PullRequests } from "PullRequests";
+import type { IPullRequest } from "PullRequests/types";
 import type { IUserContributions } from "QuickStats";
 import { QuickStats } from "QuickStats";
 import { StdOutParser } from "Stdout";
@@ -25,6 +27,7 @@ export class RepositoryStatsPull extends RepositoryPull<Options> {
   mesh: IMesh = {};
   totalLines: number = 0;
   totalCommits: number = 0;
+  PRs: IPullRequest[] = [];
   userStats: IUserContributions[] = [];
 
   public async pull() {
@@ -35,6 +38,7 @@ export class RepositoryStatsPull extends RepositoryPull<Options> {
       await this.getStats();
       await this.countLines();
       await this.createMesh();
+      await this.getPullRequests();
       this.status = JobStatus.Complete;
     } catch (error) {
       this.status = JobStatus.Failed;
@@ -68,11 +72,19 @@ export class RepositoryStatsPull extends RepositoryPull<Options> {
   }
 
   private async createMesh() {
-    if (this.options.range) {
+    if (!this.options.range) {
       return;
     }
     const mesh = new Mesh(RepositoryPull.TARGET_DIRECTORY);
     this.mesh = await mesh.execute();
+  }
+
+  private async getPullRequests() {
+    if (this.options.range) {
+      return;
+    }
+    const PRs = new PullRequests(RepositoryPull.TARGET_DIRECTORY);
+    this.PRs = await PRs.execute();
   }
 
   public async pushResultsToCore() {
