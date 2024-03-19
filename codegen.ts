@@ -25,6 +25,7 @@ const config: CodegenConfig = {
       },
       config: {
         scalars: {
+          Matrix: "number[][]",
           Mesh: "{ [key: string]: { [key: string]: number } }",
         },
       },

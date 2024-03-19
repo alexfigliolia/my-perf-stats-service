@@ -3,13 +3,15 @@ schema {
   mutation: Mutation
   subscription: Subscription
 }
+scalar Matrix
 scalar Mesh
 type Query {
   teams(limit: Int, search: String, offset: Int, organizationId: Int!, omitCurrentUser: Boolean): [Team!]!
   myTeams(organizationId: Int!): [CurrentUsersTeam!]!
+  teamMesh(teamId: Int!, organizationId: Int!): TeamMesh!
   standouts(organizationId: Int!, teamId: Int!): [Standout!]!
   totalTeams(organizationId: Int!): Int!
-  teammateStats(organizationId: Int!, userId: Int!): TeamProfilesPerUser!
+  teammateProfile(organizationId: Int!, userId: Int!): OverallStatsPerUser!
   installationSetup(platform: Platform!, installation_id: Int!): Installation!
   userAndAffiliations: UserAndAffiliations!
   trackedRepositories(teamId: Int, organizationId: Int!): [Repository!]!
@@ -57,18 +59,15 @@ type CurrentUsersTeam {
 type RoleType {
   role: UserRole!
 }
+type TeamMesh {
+  key: [String!]!
+  mesh: Matrix!
+}
 type Standout {
   id: Int!
   name: String!
   lines: Int!
   increase: Int!
-}
-type TeamProfilesPerUser {
-  id: Int!
-  name: String!
-  lines: Int!
-  commits: Int!
-  teams: [OverallStatsPerUser!]!
 }
 type OverallStatsPerUser {
   id: Int!

@@ -69,7 +69,7 @@ export class RepositoryStatsPull extends RepositoryPull<Options> {
   }
 
   private async createMesh() {
-    if (!this.options.range) {
+    if (this.options.range) {
       return;
     }
     const mesh = new Mesh(RepositoryPull.TARGET_DIRECTORY);

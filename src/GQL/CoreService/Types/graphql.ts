@@ -14,6 +14,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
+  Matrix: { input: number[][]; output: number[][]; }
   Mesh: { input: { [key: string]: { [key: string]: number } }; output: { [key: string]: { [key: string]: number } }; }
 };
 
@@ -162,7 +163,8 @@ export type Query = {
   myTeams: Array<CurrentUsersTeam>;
   overallStatsPerUser: TeamStats;
   standouts: Array<Standout>;
-  teammateStats: TeamProfilesPerUser;
+  teamMesh: TeamMesh;
+  teammateProfile: OverallStatsPerUser;
   teams: Array<Team>;
   totalRepositories: Scalars['Int']['output'];
   totalTeams: Scalars['Int']['output'];
@@ -208,7 +210,13 @@ export type QueryStandoutsArgs = {
 };
 
 
-export type QueryTeammateStatsArgs = {
+export type QueryTeamMeshArgs = {
+  organizationId: Scalars['Int']['input'];
+  teamId: Scalars['Int']['input'];
+};
+
+
+export type QueryTeammateProfileArgs = {
   organizationId: Scalars['Int']['input'];
   userId: Scalars['Int']['input'];
 };
@@ -318,13 +326,10 @@ export type Team = {
   users: Array<User>;
 };
 
-export type TeamProfilesPerUser = {
-  __typename?: 'TeamProfilesPerUser';
-  commits: Scalars['Int']['output'];
-  id: Scalars['Int']['output'];
-  lines: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
-  teams: Array<OverallStatsPerUser>;
+export type TeamMesh = {
+  __typename?: 'TeamMesh';
+  key: Array<Scalars['String']['output']>;
+  mesh: Scalars['Matrix']['output'];
 };
 
 export type TeamProject = {
