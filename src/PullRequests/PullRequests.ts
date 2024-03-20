@@ -17,6 +17,7 @@ export class PullRequests {
   public async execute() {
     const { stdout } = await ChildProcess.execute(
       `${PullRequests.COMMAND} --since="${this.lastYear}"`,
+      { cwd: this.cwd },
     );
     return this.parse(stdout.split("\n"));
   }
