@@ -41,7 +41,7 @@
     "spdy": "^4.0.2"
   },
   "devDependencies": {
-    "@figliolia/ts-packager": "^1.0.6",
+    "@figliolia/ts-packager": "^1.0.8",
     "@figliolia/typescript-dev-server": "^1.0.4",
     "@graphql-codegen/cli": "^5.0.0",
     "@graphql-codegen/client-preset": "^4.1.0",
@@ -64,8 +64,6 @@
     "pm2": "^5.3.1",
     "prettier": "^3.2.5",
     "ts-jest": "^29.1.2",
-    "tsc-alias": "^1.8.8",
-    "tsconfig-paths": "^4.2.0",
     "tsx": "^4.7.1",
     "typescript": "^5.3.3"
   },
