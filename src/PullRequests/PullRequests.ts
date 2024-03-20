@@ -1,4 +1,3 @@
-import { subYears } from "date-fns";
 import { ChildProcess } from "@figliolia/child-process";
 import { StdOutParser } from "Stdout";
 import type { IPullRequest } from "./types";
@@ -15,10 +14,9 @@ export class PullRequests {
   }
 
   public async execute() {
-    const { stdout } = await ChildProcess.execute(
-      `${PullRequests.COMMAND} --since="${this.lastYear}"`,
-      { cwd: this.cwd },
-    );
+    const { stdout } = await ChildProcess.execute(PullRequests.COMMAND, {
+      cwd: this.cwd,
+    });
     return this.parse(stdout.split("\n"));
   }
 
@@ -100,10 +98,5 @@ export class PullRequests {
       this.currentAuthor = false;
       this.currentDescription = false;
     }
-  }
-
-  private get lastYear() {
-    const lastYear = subYears(new Date(), 1);
-    return lastYear.toISOString();
   }
 }
