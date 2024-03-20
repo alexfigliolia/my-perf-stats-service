@@ -12,6 +12,7 @@ type Query {
   standouts(organizationId: Int!, teamId: Int!): [Standout!]!
   totalTeams(organizationId: Int!): Int!
   teammateProfile(organizationId: Int!, userId: Int!): OverallStatsPerUser!
+  teamPullRequests(teamId: Int!, organizationId: Int!, page: Int): [PullRequest!]!
   installationSetup(platform: Platform!, installation_id: Int!): Installation!
   userAndAffiliations: UserAndAffiliations!
   trackedRepositories(teamId: Int, organizationId: Int!): [Repository!]!
@@ -74,7 +75,15 @@ type OverallStatsPerUser {
   name: String!
   lines: Int!
   commits: Int!
+  pullRequests: Int!
   linesPerMonth: [Int!]!
+}
+type PullRequest {
+  id: Int!
+  date: String!
+  author: String!
+  description: String!
+  project: String!
 }
 type Installation {
   id: Int!

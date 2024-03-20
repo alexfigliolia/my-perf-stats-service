@@ -143,6 +143,7 @@ export type OverallStatsPerUser = {
   lines: Scalars['Int']['output'];
   linesPerMonth: Array<Scalars['Int']['output']>;
   name: Scalars['String']['output'];
+  pullRequests: Scalars['Int']['output'];
 };
 
 export enum Platform {
@@ -154,6 +155,15 @@ export type ProjectTrend = {
   __typename?: 'ProjectTrend';
   trackedProjects: Array<TeamProject>;
   trend: Scalars['Int']['output'];
+};
+
+export type PullRequest = {
+  __typename?: 'PullRequest';
+  author: Scalars['String']['output'];
+  date: Scalars['String']['output'];
+  description: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  project: Scalars['String']['output'];
 };
 
 export type PullRequestEntry = {
@@ -171,6 +181,7 @@ export type Query = {
   overallStatsPerUser: TeamStats;
   standouts: Array<Standout>;
   teamMesh: TeamMesh;
+  teamPullRequests: Array<PullRequest>;
   teammateProfile: OverallStatsPerUser;
   teams: Array<Team>;
   totalRepositories: Scalars['Int']['output'];
@@ -219,6 +230,13 @@ export type QueryStandoutsArgs = {
 
 export type QueryTeamMeshArgs = {
   organizationId: Scalars['Int']['input'];
+  teamId: Scalars['Int']['input'];
+};
+
+
+export type QueryTeamPullRequestsArgs = {
+  organizationId: Scalars['Int']['input'];
+  page?: InputMaybe<Scalars['Int']['input']>;
   teamId: Scalars['Int']['input'];
 };
 
